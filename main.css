@@ -15,3 +15,10 @@
 #results-container {
     display: none;
 }
+
+footer.footer {
+    padding: 0.25rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
