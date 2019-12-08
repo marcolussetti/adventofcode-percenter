@@ -14,9 +14,9 @@ function processYourStats() {
     return yourStats.sort((a, b) => a.day > b.day)
 }
 
-function processGlobalStats() {
+function processGlobalStats(year) {
     // TODO: replace with a caching system
-    return fetch("https://cors-anywhere.herokuapp.com/https://adventofcode.com/2019/stats")
+    return fetch(`https://cors-anywhere.herokuapp.com/https://adventofcode.com/${year}/stats`)
         .then(resp => resp.text())
         .then(text => new DOMParser().parseFromString(text, "text/html"))
         .then(html => html.querySelector("pre.stats"))
@@ -82,12 +82,14 @@ function plotPerformance(comparedStats) {
 async function handleInput() {
     document.querySelector("#results-body").innerHTML = "";
 
+    const year = document.querySelector("#year-selector").value
+
     const yourStats = processYourStats()
     if (yourStats.length == 0) {
         alert("You need to put something in here...")
         return -1
     }
-    const globalStats = await processGlobalStats()
+    const globalStats = await processGlobalStats(year)
 
     const yourStatsCompared = yourStats.map((val) => {
         return [
