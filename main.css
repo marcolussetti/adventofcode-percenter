@@ -30,3 +30,8 @@ body {
 #wrapper {
   flex: 1;
 }
+
+
+.section {
+    padding: 0;
+}

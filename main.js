@@ -46,15 +46,19 @@ function plotPerformance(comparedStats) {
             datasets: [
                 {
                     label: "Part 1",
-                    backgroundColor: '#003f5c',
-                    borderColor: '#003f5c',
+                    backgroundColor: '#1a85ff',
+                    borderColor: '#1a85ff',
+                    pointBackgroundColor: '#1a85ff',
+                    pointBorderColor: '#1a85ff',
                     fill: false,
                     data: comparedStats.map(entry => entry[2])
                 },
                 {
                     label: "Part 2",
-                    backgroundColor: '#003f5c',
-                    borderColor: '#ffa600',
+                    backgroundColor: '#d41159',
+                    borderColor: '#d41159',
+                    pointBackgroundColor: '#d41159',
+                    pointBorderColor: '#d41159',
                     fill: false,
                     data: comparedStats.map(entry => entry[4])
                 },
@@ -65,8 +69,9 @@ function plotPerformance(comparedStats) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        suggestedMin: 0,
-                        suggestedMax: 1
+                        callback: function (value, index, values) {
+                            return `${value * 100}%`
+                        }
                     }
                 }]
             }
