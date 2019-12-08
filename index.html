@@ -7,6 +7,7 @@
     <title>Advent of Code 2019 - Rank to Percent</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     <link rel="stylesheet" href="main.css">
@@ -47,24 +48,28 @@
                     </div>
 
                     <div id="results-container" class="container center-container">
-                        <table class="table" id="results-table">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>Part 1: Rank</th>
-                                    <th>Part 1: Top %</th>
-                                    <th>Part 2: Rank</th>
-                                    <th>Part 2: Top %</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr id="results-footer">
-                                </tr>
-                            </tfoot>
-                            <tbody id="results-body">
+                        <canvas id="results-chart"></canvas>
 
-                            </tbody>
-                        </table>
+                        <div class="center-container">
+                            <table class="table" id="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Part 1: Rank</th>
+                                        <th>Part 1: Top %</th>
+                                        <th>Part 2: Rank</th>
+                                        <th>Part 2: Top %</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr id="results-footer">
+                                    </tr>
+                                </tfoot>
+                                <tbody id="results-body">
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

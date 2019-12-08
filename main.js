@@ -30,18 +30,46 @@ function processGlobalStats() {
         .catch(err => { })
 }
 
-function discretize_raw_percent(rawPercent) {
+function discretizeRawPercent(rawPercent) {
     const buckets = [0.001, 0.005, 0.01, 0.025, 0.05, 0.10, 0.25, 0.33, 0.50, 0.75, 1.0]
     return buckets.filter(bucketEnd => bucketEnd >= rawPercent)[0] * 100
 }
 
-async function handle_input() {
+function plotPerformance(comparedStats) {
+    const ctx = document.querySelector("#results-chart").getContext("2d")
+
+    let chart = new Chart(ctx, {
+        type: 'line',
+
+        data: {
+            labels: comparedStats.map(entry => `${(entry[0])}`),
+            datasets: [
+                {
+                    label: "Part 1",
+                    backgroundColor: 'rgba(255,255,255, 0)',
+                    borderColor: '#003f5c',
+                    data: comparedStats.map(entry => entry[2])
+                },
+                {
+                    label: "Part 2",
+                    backgroundColor: 'rgba(255,255,255,0)',
+                    borderColor: '#ffa600',
+                    data: comparedStats.map(entry => entry[4])
+                },
+            ]
+        },
+
+        options: {}
+    })
+}
+
+async function handleInput() {
     document.querySelector("#results-body").innerHTML = "";
 
     const yourStats = processYourStats()
     if (yourStats.length == 0) {
         alert("You need to put something in here...")
-        return -1;
+        return -1
     }
     const globalStats = await processGlobalStats()
 
@@ -59,15 +87,16 @@ async function handle_input() {
         const rowEl = document.createElement("tr")
         row.forEach((item, i) => {
             let element = document.createElement("td")
-            element.innerHTML = i % 2 == 0 && i > 0 && !Number.isNaN(item) ? `Top ${discretize_raw_percent(item)}%` : !Number.isNaN(item) ? `${item}` : "&mdash;"
+            element.innerHTML = i % 2 == 0 && i > 0 && !Number.isNaN(item) ? `Top ${discretizeRawPercent(item)}%` : !Number.isNaN(item) ? `${item}` : "&mdash;"
             rowEl.appendChild(element)
-        });
+        })
 
         document.querySelector("#results-body").appendChild(rowEl)
     })
 
-    document.querySelector("#results-container").style.display = "block";
-    document.querySelector("#form-container").style.display = "none";
-
+    document.querySelector("#results-container").style.display = "block"
+    document.querySelector("#form-container").style.display = "none"
+    plotPerformance(yourStatsCompared)
 }
-document.querySelector("#compute-button").addEventListener("click", handle_input)
+
+document.querySelector("#compute-button").addEventListener("click", handleInput)
