@@ -35,3 +35,8 @@ body {
 .section {
     padding: 0;
 }
+
+
+td {
+    text-align: right !important;
+}

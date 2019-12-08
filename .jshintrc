@@ -1,0 +1,6 @@
+{
+    "camelcase": true,
+    "quotmark": "double",
+    "asi": true,
+    "esversion": 8
+}

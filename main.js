@@ -1,3 +1,6 @@
+let yourStats
+let globalStats
+
 function processYourStats() {
     const inputString = document.querySelector("#input-textarea").value
     const lines = inputString.split("\n").map(line => line.trim().split(/\s+/)).filter(line => /^\d+$/.test(line[0]))
@@ -22,12 +25,12 @@ function processGlobalStats(year) {
         .then(html => html.querySelector("pre.stats"))
         .then(statsElement => {
             // console.log(statsElement)
-            const statsLines = statsElement.textContent.trim().split('\n').map(line => line.trim().split(/\s+/)).filter(line => /^\d+$/.test(line[0]))
+            const statsLines = statsElement.textContent.trim().split("\n").map(line => line.trim().split(/\s+/)).filter(line => /^\d+$/.test(line[0]))
 
             return statsLines.map(line => [parseInt(line[0]), parseInt(line[1]), parseInt(line[2])])
         })
         .then(result => result.sort((a, b) => a[0] - b[0]))
-        .catch(err => { })
+        .catch()
 }
 
 function discretizeRawPercent(rawPercent) {
@@ -35,32 +38,35 @@ function discretizeRawPercent(rawPercent) {
     return buckets.filter(bucketEnd => bucketEnd >= rawPercent)[0] * 100
 }
 
-function plotPerformance(comparedStats) {
-    const ctx = document.querySelector("#results-chart").getContext("2d")
+function plotPerformance(comparedStats, rankOnly = false) {
+    document.querySelector("#results-chart").innerHTML = "";
+    document.querySelector("#results-chart").appendChild(document.createElement("canvas"))
 
-    let chart = new Chart(ctx, {
-        type: 'line',
+    const ctx = document.querySelector("#results-chart>canvas").getContext("2d")
+
+    new Chart(ctx, {
+        type: "line",
 
         data: {
             labels: comparedStats.map(entry => `${(entry[0])}`),
             datasets: [
                 {
                     label: "Part 1",
-                    backgroundColor: '#1a85ff',
-                    borderColor: '#1a85ff',
-                    pointBackgroundColor: '#1a85ff',
-                    pointBorderColor: '#1a85ff',
+                    backgroundColor: "#1a85ff",
+                    borderColor: "#1a85ff",
+                    pointBackgroundColor: "#1a85ff",
+                    pointBorderColor: "#1a85ff",
                     fill: false,
-                    data: comparedStats.map(entry => entry[2])
+                    data: comparedStats.map(entry => rankOnly ? entry[1] : entry[2])
                 },
                 {
                     label: "Part 2",
-                    backgroundColor: '#d41159',
-                    borderColor: '#d41159',
-                    pointBackgroundColor: '#d41159',
-                    pointBorderColor: '#d41159',
+                    backgroundColor: "#d41159",
+                    borderColor: "#d41159",
+                    pointBackgroundColor: "#d41159",
+                    pointBorderColor: "#d41159backgroundColor",
                     fill: false,
-                    data: comparedStats.map(entry => entry[4])
+                    data: comparedStats.map(entry => rankOnly ? entry[2] : entry[4])
                 },
             ]
         },
@@ -70,7 +76,7 @@ function plotPerformance(comparedStats) {
                 yAxes: [{
                     ticks: {
                         callback: function (value, index, values) {
-                            return `${value * 100}%`
+                            return rankOnly ? value : `${value * 100}%`
                         }
                     }
                 }]
@@ -79,42 +85,79 @@ function plotPerformance(comparedStats) {
     })
 }
 
-async function handleInput() {
+function generateStats(totalUsers = false, rankOnly = false) {
+    console.log(`totalUsers: ${totalUsers}. rankOnly: ${rankOnly}`)
     document.querySelector("#results-body").innerHTML = "";
 
-    const year = document.querySelector("#year-selector").value
-
-    const yourStats = processYourStats()
-    if (yourStats.length == 0) {
-        alert("You need to put something in here...")
-        return -1
-    }
-    const globalStats = await processGlobalStats(year)
-
     const yourStatsCompared = yourStats.map((val) => {
-        return [
-            val.day,
-            val.stats[0].rank,
-            val.stats[0].rank / (globalStats[val.day - 1][1] + globalStats[val.day - 1][2]),
-            val.stats[1].rank,
-            val.stats[1].rank / globalStats[val.day - 1][1]
-        ]
+        const partOneTotal = !totalUsers ? globalStats[val.day - 1][1] + globalStats[val.day - 1][2] : globalStats[0][1] + globalStats[0][2]
+        const partTwoTotal = !totalUsers ? globalStats[val.day - 1][1] : globalStats[0][1] + globalStats[0][2]
+
+        if (rankOnly)
+            return [val.day, val.stats[0].rank, val.stats[1].rank]
+        else
+            return [
+                val.day,
+                val.stats[0].rank,
+                val.stats[0].rank / partTwoTotal,
+                val.stats[1].rank,
+                val.stats[1].rank / partOneTotal
+            ]
     }).sort((a, b) => a[0] - b[0])
 
-    const yourStatsElements = yourStatsCompared.map(row => {
+    yourStatsCompared.map(row => {
         const rowEl = document.createElement("tr")
         row.forEach((item, i) => {
             let element = document.createElement("td")
-            element.innerHTML = i % 2 == 0 && i > 0 && !Number.isNaN(item) ? `Top ${discretizeRawPercent(item)}%` : !Number.isNaN(item) ? `${item}` : "&mdash;"
+            element.innerHTML = i % 2 == 0 && i > 0 && !Number.isNaN(item) && !rankOnly ? `Top ${discretizeRawPercent(item)}%` : !Number.isNaN(item) ? `${item}` : "&mdash;"
             rowEl.appendChild(element)
         })
 
         document.querySelector("#results-body").appendChild(rowEl)
     })
 
-    document.querySelector("#results-container").style.display = "block"
-    document.querySelector("#form-container").style.display = "none"
-    plotPerformance(yourStatsCompared)
+    if (rankOnly)
+        [...document.querySelectorAll("#results-table th")].map(el => { if (el.textContent.includes("%")) el.style.display = "none" })
+    else
+        [...document.querySelectorAll("#results-table th")].map(el => { el.style.display = "table-cell" });
+
+    const buttons = [...document.querySelectorAll(".buttons-container>button")]
+
+    buttons.map(button => button.className = "button is-small");
+    if (rankOnly) {
+        buttons[2].classList.add("is-success")
+        buttons[2].classList.add("is-selected")
+    } else if (totalUsers) {
+        buttons[1].classList.add("is-success")
+        buttons[1].classList.add("is-selected")
+    } else {
+        buttons[0].classList.add("is-success")
+        buttons[0].classList.add("is-selected")
+    }
+
+    plotPerformance(yourStatsCompared, rankOnly = rankOnly)
 }
 
-document.querySelector("#compute-button").addEventListener("click", handleInput)
+async function handleInput() {
+    const year = document.querySelector("#year-selector").value
+
+    yourStats = processYourStats()
+    if (yourStats.length == 0) {
+        alert("You need to put something in here...")
+        return -1
+    }
+    globalStats = await processGlobalStats(year)
+
+    generateStats()
+
+    document.querySelector("#results-container").style.display = "block"
+    document.querySelector("#form-container").style.display = "none"
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("#compute-button").addEventListener("click", handleInput)
+
+    document.querySelector("#per-day-selector").addEventListener("click", generateStats.bind(null, false, false))
+    document.querySelector("#total-users-selector").addEventListener("click", generateStats.bind(null, true, false))
+    document.querySelector("#rank-only-selector").addEventListener("click", generateStats.bind(null, false, true))
+}, false);

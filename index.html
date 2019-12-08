@@ -62,7 +62,13 @@
                     </div>
 
                     <div id="results-container" class="container center-container">
-                        <canvas id="results-chart"></canvas>
+                        <div class="center-container buttons-container">
+                            <button class="button is-small" id="per-day-selector">Per Day</button>
+                            <button class="button is-small" id="total-users-selector">vs Total Users</button>
+                            <button class="button is-small" id="rank-only-selector">Rank Only</button>
+                        </div>
+
+                        <div id="results-chart"><canvas></canvas></div>
 
                         <div class="center-container">
                             <table class="table" id="results-table">
