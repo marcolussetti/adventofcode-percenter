@@ -26,7 +26,7 @@ function processGlobalStats() {
 
             return statsLines.map(line => [parseInt(line[0]), parseInt(line[1]), parseInt(line[2])])
         })
-        .then(result => result.sort((a, b) => a[0] > b[0] ? 1 : -1))
+        .then(result => result.sort((a, b) => a[0] - b[0]))
         .catch(err => { })
 }
 
@@ -97,7 +97,7 @@ async function handleInput() {
             val.stats[1].rank,
             val.stats[1].rank / globalStats[val.day - 1][1]
         ]
-    })
+    }).sort((a, b) => a[0] - b[0])
 
     const yourStatsElements = yourStatsCompared.map(row => {
         const rowEl = document.createElement("tr")
