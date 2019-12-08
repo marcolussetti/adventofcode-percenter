@@ -18,7 +18,15 @@
 
 footer.footer {
     padding: 0.25rem;
-    position: absolute;
-    bottom: 0;
     width: 100%;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#wrapper {
+  flex: 1;
 }
