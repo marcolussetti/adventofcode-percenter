@@ -26,10 +26,8 @@ function processGlobalStats() {
 
             return statsLines.map(line => [parseInt(line[0]), parseInt(line[1]), parseInt(line[2])])
         })
-        .then(result => result.sort((a, b) => a[0] > b[0]))
-        .catch(err => {
-
-        })
+        .then(result => result.sort((a, b) => a[0] > b[0] ? 1 : -1))
+        .catch(err => { })
 }
 
 function discretize_raw_percent(rawPercent) {
