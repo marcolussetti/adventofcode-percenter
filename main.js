@@ -46,20 +46,31 @@ function plotPerformance(comparedStats) {
             datasets: [
                 {
                     label: "Part 1",
-                    backgroundColor: 'rgba(255,255,255, 0)',
+                    backgroundColor: '#003f5c',
                     borderColor: '#003f5c',
+                    fill: false,
                     data: comparedStats.map(entry => entry[2])
                 },
                 {
                     label: "Part 2",
-                    backgroundColor: 'rgba(255,255,255,0)',
+                    backgroundColor: '#003f5c',
                     borderColor: '#ffa600',
+                    fill: false,
                     data: comparedStats.map(entry => entry[4])
                 },
             ]
         },
 
-        options: {}
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 1
+                    }
+                }]
+            }
+        }
     })
 }
 
