@@ -1,0 +1,17 @@
+.container {
+    padding: 1rem;
+}
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container > div {
+    padding: 0.5rem;
+}
+
+#results-container {
+    display: none;
+}

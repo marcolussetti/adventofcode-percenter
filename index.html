@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Advent of Code 2019 - Rank to Percent</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <script defer src="main.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="container">
+                        <h1 class="title">
+                            Advent of Code 2019 - Rank to Percent
+                        </h1>
+                        <p class="subtitle">
+                            Missing out on the global leaderboard?<br>Convert your rank to a percentage!
+                        </p>
+                    </div>
+
+                    <div id="form-container" class="container">
+                        <div>
+                            <p>Copy your stats from the <a href="https://adventofcode.com/2019/leaderboard/self"
+                                    target="_blank">personal
+                                    leaderboard</a> into the text field below.</p>
+                        </div>
+
+                        <div>
+                            <textarea id="input-textarea" class="textarea"
+                                placeholder="      --------Part 1--------   --------Part 2--------&#10;Day       Time   Rank  Score       Time   Rank  Score&#10;  7   00:00:01    1      100   00:00:02    1      100&#10;  6   00:00:01    1      100   00:00:02   1      100&#10;  5   00:00:01    1      100   00:00:02    1      100&#10;  4   00:00:01   1      100   00:00:02    1      100&#10;  3   00:00:01    1      100   00:00:02    1      100&#10;  2   00:00:01    1      100   00:00:02    1      100&#10;  1   00:00:01  1      100   00:00:02  1      100"
+                                rows="10"></textarea>
+                        </div>
+
+                        <div class="center-container"><button id="compute-button"
+                                class="button is-medium">Compute!</button></div>
+                    </div>
+
+                    <div id="results-container" class="container center-container">
+                        <table class="table" id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Part 1: Rank</th>
+                                    <th>Part 1: Top %</th>
+                                    <th>Part 2: Rank</th>
+                                    <th>Part 2: Top %</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr id="results-footer">
+                                </tr>
+                            </tfoot>
+                            <tbody id="results-body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </section>
+</body>
+
+</html>
