@@ -76,7 +76,7 @@ function plotPerformance(comparedStats, rankOnly = false) {
                 yAxes: [{
                     ticks: {
                         callback: function (value, index, values) {
-                            return rankOnly ? value : `${value * 100}%`
+                            return rankOnly ? value : `${~~(value * 100)}%`
                         }
                     }
                 }]
