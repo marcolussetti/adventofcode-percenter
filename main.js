@@ -99,9 +99,9 @@ function generateStats(totalUsers = false, rankOnly = false) {
             return [
                 val.day,
                 val.stats[0].rank,
-                val.stats[0].rank / partTwoTotal,
+                val.stats[0].rank / partOneTotal,
                 val.stats[1].rank,
-                val.stats[1].rank / partOneTotal
+                val.stats[1].rank / partTwoTotal
             ]
     }).sort((a, b) => a[0] - b[0])
 
