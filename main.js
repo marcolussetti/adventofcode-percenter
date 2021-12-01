@@ -19,7 +19,7 @@ function processYourStats() {
 
 function processGlobalStats(year) {
     // TODO: replace with a caching system
-    return fetch(`https://cors-anywhere.herokuapp.com/https://adventofcode.com/${year}/stats`)
+    return fetch(`https://marcors.ferned.net/https://adventofcode.com/${year}/stats`)
         .then(resp => resp.text())
         .then(text => new DOMParser().parseFromString(text, "text/html"))
         .then(html => html.querySelector("pre.stats"))
